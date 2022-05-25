@@ -141,5 +141,14 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "libraries": [
+      {
+        "name": "RNUtilsSpec",
+        "type": "modules",
+        "jsSrcsDir": "src"
+      }
+    ]
   }
 }
