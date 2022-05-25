@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { MapView, Utils } from 'react-native-appjs';
 
 import React from 'react';
-import { Utils } from 'react-native-appjs';
 
 export default function App() {
   const handleGetOrientation = () => {
@@ -28,6 +28,7 @@ export default function App() {
       <Button title="getLocation" onPress={handleGetLocation} />
       <Button title="getDeviceInfo" onPress={handleGetDeviceInfo} />
       <Button title="encode" onPress={handleEncodeData} />
+      <MapView style={styles.map} />
     </View>
   );
 }
@@ -37,5 +38,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  map: {
+    width: 300,
+    height: 300,
   },
 });
