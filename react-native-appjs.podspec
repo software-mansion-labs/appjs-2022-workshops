@@ -18,6 +18,8 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm}"
 
+  s.frameworks = "MapKit"
+
   s.dependency "React-Core"
 
   # This guard prevent to install the dependencies when we run `pod install` in the old architecture.
