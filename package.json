@@ -148,6 +148,11 @@
         "name": "RNUtilsSpec",
         "type": "modules",
         "jsSrcsDir": "src"
+      },
+      {
+        "name": "RNMapViewSpec",
+        "type": "components",
+        "jsSrcsDir": "src"
       }
     ]
   }
