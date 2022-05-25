@@ -1,9 +1,12 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { MapView, Utils } from 'react-native-appjs';
+import { MapType, MapView, Utils } from 'react-native-appjs';
+import React, { useState } from 'react';
 
-import React from 'react';
+const MAP_TYPES: MapType[] = ['standard', 'satellite', 'hybrid'];
 
 export default function App() {
+  const [mapType, setMapType] = useState<MapType>('standard');
+
   const handleGetOrientation = () => {
     console.log('getOrientation', Utils.getOrientation());
   };
@@ -28,7 +31,10 @@ export default function App() {
       <Button title="getLocation" onPress={handleGetLocation} />
       <Button title="getDeviceInfo" onPress={handleGetDeviceInfo} />
       <Button title="encode" onPress={handleEncodeData} />
-      <MapView style={styles.map} />
+      <MapView style={styles.map} mapType={mapType} />
+      {MAP_TYPES.map((item) => (
+        <Button key={item} title={item} onPress={() => setMapType(item)} />
+      ))}
     </View>
   );
 }

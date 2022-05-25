@@ -40,6 +40,26 @@ using namespace facebook::react;
   return self;
 }
 
+- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
+{
+  const auto &oldViewProps = *std::static_pointer_cast<RNMapViewProps const>(_props);
+  const auto &newViewProps = *std::static_pointer_cast<RNMapViewProps const>(props);
+
+  if (oldViewProps.mapType != newViewProps.mapType) {
+    _view.mapType = parseMapType(newViewProps.mapType);
+  }
+
+  [super updateProps:props oldProps:oldProps];
+}
+
+static inline MKMapType parseMapType(const RNMapViewMapType &value) {
+  switch (value) {
+    case RNMapViewMapType::Standard: return MKMapTypeStandard;
+    case RNMapViewMapType::Satellite: return MKMapTypeSatellite;
+    case RNMapViewMapType::Hybrid: return MKMapTypeHybrid;
+  }
+}
+
 Class<RCTComponentViewProtocol> RNMapViewCls(void)
 {
   return RNMapView.class;

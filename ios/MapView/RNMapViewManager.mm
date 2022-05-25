@@ -22,6 +22,11 @@ RCT_EXPORT_MODULE(RNMapView)
   return _view;
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(mapType, NSString, UIView)
+{
+  // TODO: Paper implementation
+}
+
 + (BOOL)requiresMainQueueSetup
 {
     return NO;
