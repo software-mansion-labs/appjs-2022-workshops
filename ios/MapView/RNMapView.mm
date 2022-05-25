@@ -107,6 +107,68 @@ static inline MKMapType parseMapType(const RNMapViewMapType &value) {
   return [_view convertPoint:point toCoordinateFromView:_view];
 }
 
+#pragma mark - Native commands
+
+- (void)handleCommand:(const NSString *)commandName args:(const NSArray *)args
+{
+  RCTMapViewHandleCommand(self, commandName, args);
+}
+
+inline void RCTMapViewHandleCommand(RNMapView *componentView, NSString const *commandName, NSArray const *args)
+{
+  if ([commandName isEqualToString:@"moveTo"]) {
+#if RCT_DEBUG
+    if ([args count] != 2) {
+      RCTLogError(
+        @"%@ command %@ received %d arguments, expected %d.", @"MapView", commandName, (int)[args count], 2);
+      return;
+    }
+#endif
+    NSObject *arg0 = args[0];
+#if RCT_DEBUG
+    if (!([[arg0 class] isSubclassOfClass:[NSDictionary class]])) {
+      RCTLogError(@"error");
+      return;
+    }
+#endif
+    NSDictionary *coordinates = (NSDictionary *)arg0;
+    NSObject *arg0latitude = coordinates[@"latitude"];
+#if RCT_DEBUG
+    if (!RCTValidateTypeOfViewCommandArgument(arg0latitude, [NSNumber class], @"float", @"MapView", commandName, @"1st")) {
+      return;
+    }
+#endif
+    NSObject *arg0longitude = coordinates[@"longitude"];
+#if RCT_DEBUG
+    if (!RCTValidateTypeOfViewCommandArgument(arg0longitude, [NSNumber class], @"float", @"MapView", commandName, @"1st")) {
+      return;
+    }
+#endif
+
+    NSObject *arg1 = args[1];
+#if RCT_DEBUG
+    if (!RCTValidateTypeOfViewCommandArgument(arg1, [NSNumber class], @"boolean", @"MapView", commandName, @"2nd")) {
+      return;
+    }
+#endif
+
+    float latitude = [(NSNumber *)arg0latitude floatValue];
+    float longitude = [(NSNumber *)arg0longitude floatValue];
+    BOOL animated = [(NSNumber *)arg1 boolValue];
+
+    [componentView moveTo:latitude longitude:longitude animated:animated];
+    return;
+  }
+}
+
+- (void)moveTo:(float)latitude longitude:(float)longitude animated:(BOOL)animated
+{
+  CLLocationCoordinate2D center;
+  center.latitude = latitude;
+  center.longitude = longitude;
+  [_view setCenterCoordinate:center animated:animated];
+}
+
 Class<RCTComponentViewProtocol> RNMapViewCls(void)
 {
   return RNMapView.class;

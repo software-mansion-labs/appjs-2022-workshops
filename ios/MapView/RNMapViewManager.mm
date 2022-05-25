@@ -31,6 +31,13 @@ RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 
 RCT_EXPORT_VIEW_PROPERTY(onRegionChange, RCTDirectEventBlock)
 
+RCT_EXPORT_METHOD(moveTo:(nonnull NSNumber *)reactTag
+             coordinates:(NSDictionary *)coordinates
+                animated:(BOOL)animated)
+{
+  // TODO: Paper implementation
+}
+
 + (BOOL)requiresMainQueueSetup
 {
     return NO;
