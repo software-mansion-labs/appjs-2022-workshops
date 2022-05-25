@@ -13,7 +13,7 @@
 
 using namespace facebook::react;
 
-@interface RNMapView () <RCTRNMapViewViewProtocol>
+@interface RNMapView () <RCTRNMapViewViewProtocol, UIGestureRecognizerDelegate>
 
 @end
 
@@ -33,6 +33,19 @@ using namespace facebook::react;
     _props = defaultProps;
 
     _view = [[MKMapView alloc] init];
+
+    UITapGestureRecognizer *tapRecognizer = [
+      [UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)
+    ];
+    tapRecognizer.numberOfTapsRequired = 1;
+    tapRecognizer.numberOfTouchesRequired = 1;
+    [_view addGestureRecognizer:tapRecognizer];
+
+    UIPanGestureRecognizer *panRecognizer = [
+      [UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)
+    ];
+    panRecognizer.delegate = self;
+    [_view addGestureRecognizer:panRecognizer];
 
     self.contentView = _view;
   }
@@ -58,6 +71,40 @@ static inline MKMapType parseMapType(const RNMapViewMapType &value) {
     case RNMapViewMapType::Satellite: return MKMapTypeSatellite;
     case RNMapViewMapType::Hybrid: return MKMapTypeHybrid;
   }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+  return YES;
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)recognizer
+{
+  CLLocationCoordinate2D point = [self getCoordinates: recognizer];
+  if (_eventEmitter) {
+    std::dynamic_pointer_cast<const facebook::react::RNMapViewEventEmitter>(_eventEmitter)
+      ->onPress(facebook::react::RNMapViewEventEmitter::OnPress{
+        .latitude = point.latitude,
+        .longitude = point.longitude
+      });
+  }
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer
+{
+  CLLocationCoordinate2D point = [self getCoordinates: recognizer];
+  if (_eventEmitter) {
+    std::dynamic_pointer_cast<const facebook::react::RNMapViewEventEmitter>(_eventEmitter)
+      ->onRegionChange(facebook::react::RNMapViewEventEmitter::OnRegionChange{
+        .latitude = point.latitude,
+        .longitude = point.longitude
+      });
+  }
+}
+
+- (CLLocationCoordinate2D)getCoordinates:(UIGestureRecognizer *)recognizer
+{
+  CGPoint point = [recognizer locationInView:_view];
+  return [_view convertPoint:point toCoordinateFromView:_view];
 }
 
 Class<RCTComponentViewProtocol> RNMapViewCls(void)

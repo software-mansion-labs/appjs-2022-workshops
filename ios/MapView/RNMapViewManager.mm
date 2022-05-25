@@ -27,6 +27,10 @@ RCT_CUSTOM_VIEW_PROPERTY(mapType, NSString, UIView)
   // TODO: Paper implementation
 }
 
+RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
+
+RCT_EXPORT_VIEW_PROPERTY(onRegionChange, RCTDirectEventBlock)
+
 + (BOOL)requiresMainQueueSetup
 {
     return NO;

@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { MapType, MapView, Utils } from 'react-native-appjs';
+import { MapType, MapView, MapViewEvent, Utils } from 'react-native-appjs';
 import React, { useState } from 'react';
 
 const MAP_TYPES: MapType[] = ['standard', 'satellite', 'hybrid'];
@@ -24,6 +24,14 @@ export default function App() {
     console.log('encode', result);
   };
 
+  const handleOnPress = (event: MapViewEvent) => {
+    console.log('press', event.nativeEvent);
+  };
+
+  const handleOnRegionChange = (event: MapViewEvent) => {
+    console.log('region change', event.nativeEvent);
+  };
+
   return (
     <View style={styles.container}>
       <Text>App.js</Text>
@@ -31,7 +39,12 @@ export default function App() {
       <Button title="getLocation" onPress={handleGetLocation} />
       <Button title="getDeviceInfo" onPress={handleGetDeviceInfo} />
       <Button title="encode" onPress={handleEncodeData} />
-      <MapView style={styles.map} mapType={mapType} />
+      <MapView
+        style={styles.map}
+        mapType={mapType}
+        onPress={handleOnPress}
+        onRegionChange={handleOnRegionChange}
+      />
       {MAP_TYPES.map((item) => (
         <Button key={item} title={item} onPress={() => setMapType(item)} />
       ))}

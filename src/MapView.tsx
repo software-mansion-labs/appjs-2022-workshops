@@ -8,3 +8,11 @@ export const MapView = isFabricEnabled
   : requireNativeComponent('RNMapView');
 
 export type MapType = 'standard' | 'satellite' | 'hybrid';
+
+export type MapViewEvent = {
+  nativeEvent: {
+    latitude: number;
+    longitude: number;
+    target: number;
+  };
+};
