@@ -12,7 +12,14 @@ buildscript {
     }
 }
 
+def isNewArchitectureEnabled() {
+    return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
 apply plugin: 'com.android.library'
+if (isNewArchitectureEnabled()) {
+    apply plugin: 'com.facebook.react'
+}
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -25,7 +32,16 @@ android {
         targetSdkVersion safeExtGet('Appjs_targetSdkVersion', 29)
         versionCode 1
         versionName "1.0"
+    }
 
+    sourceSets {
+        main {
+            if (isNewArchitectureEnabled()) {
+                java.srcDirs += ['src/newarch']
+            } else {
+                java.srcDirs += ['src/oldarch']
+            }
+        }
     }
 
     buildTypes {
@@ -56,4 +72,14 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+}
+
+if (isNewArchitectureEnabled()) {
+    react {
+        reactRoot = rootProject.file("../node_modules/react-native/")
+        jsRootDir = file("../src/")
+        codegenDir = rootProject.file("../node_modules/react-native-codegen/")
+        libraryName = "reactnativeappjs"
+        codegenJavaPackageName = "com.reactnativeappjs"
+    }
 }
