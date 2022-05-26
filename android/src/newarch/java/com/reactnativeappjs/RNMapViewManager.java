@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -51,6 +52,11 @@ public class RNMapViewManager extends SimpleViewManager<RNMapView>
     @Override
     public @Nullable Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return RNMapViewManagerImpl.getExportedCustomDirectEventTypeConstants();
+    }
+
+    @Override
+    public void receiveCommand(@NonNull RNMapView view, String commandId, @Nullable ReadableArray args) {
+      RNMapViewManagerImpl.receiveCommand(view, commandId, args);
     }
 
 }

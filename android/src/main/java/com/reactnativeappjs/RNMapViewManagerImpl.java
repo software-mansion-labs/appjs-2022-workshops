@@ -1,9 +1,13 @@
 package com.reactnativeappjs;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +46,26 @@ public class RNMapViewManagerImpl {
       map.put("topPress", press);
       map.put("topRegionChange", regionChange);
       return map;
+    }
+
+    public static void receiveCommand(@NonNull RNMapView view, String commandId, @Nullable ReadableArray args) {
+      switch (commandId) {
+        case "moveTo":
+          if (args == null) {
+            break;
+          }
+          ReadableMap coordinates = args.getMap(0);
+          double latitude = coordinates.getDouble("latitude");
+          double longitude = coordinates.getDouble("longitude");
+          boolean animated = args.getBoolean(1);
+          RNMapViewManagerImpl.moveTo(view, latitude, longitude, animated);
+          break;
+      }
+    }
+
+    public static void moveTo(RNMapView view, double latitude, double longitude, boolean animated) {
+      LatLng latLng = new LatLng(latitude, longitude);
+      view.moveTo(latLng, animated);
     }
 
 }

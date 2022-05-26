@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -51,6 +53,17 @@ public class RNMapView extends MapView implements GoogleMap.OnMapClickListener, 
     public void onCameraMove() {
       LatLng latLng = this.googleMap.getCameraPosition().target;
       RNMapViewHelper.emitMapEvent(this, RNMapViewEventType.REGION_CHANGE, latLng);
+    }
+
+    public final void moveTo(LatLng latLng, boolean animated) {
+      this.getMapAsync((GoogleMap googleMap) -> {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+        if (animated) {
+          this.googleMap.animateCamera(cameraUpdate);
+        } else {
+          this.googleMap.moveCamera(cameraUpdate);
+        }
+      });
     }
 
 }
