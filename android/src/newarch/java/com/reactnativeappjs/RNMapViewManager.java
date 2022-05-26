@@ -8,6 +8,7 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewManagerDelegate;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.RNMapViewManagerInterface;
 import com.facebook.react.viewmanagers.RNMapViewManagerDelegate;
 
@@ -40,7 +41,9 @@ public class RNMapViewManager extends SimpleViewManager<RNMapView>
     }
 
     @Override
+    @ReactProp(name = "mapType")
     public void setMapType(RNMapView view, @Nullable String mapType) {
-      // TODO
+        RNMapViewManagerImpl.setMapType(view, mapType);
     }
+
 }
