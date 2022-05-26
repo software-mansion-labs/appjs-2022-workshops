@@ -1,9 +1,10 @@
 #import "RNMapViewManager.h"
 #import <React/RCTViewManager.h>
 #import <MapKit/MapKit.h>
+#import "AJSMapView.h"
 
 @implementation RNMapViewManager {
-  MKMapView *_view;
+  AJSMapView *_view;
 }
 
 RCT_EXPORT_MODULE(RNMapView)
@@ -11,7 +12,7 @@ RCT_EXPORT_MODULE(RNMapView)
 - (instancetype)init
 {
   if (self = [super init]) {
-    _view = [[MKMapView alloc] init];
+    _view = [[AJSMapView alloc] init];
   }
 
   return self;

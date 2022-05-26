@@ -1,6 +1,7 @@
 // This guard prevent the code from being compiled in the old architecture
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNMapView.h"
+#import "AJSMapView.h"
 
 #import <react/renderer/components/RNMapViewSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNMapViewSpec/EventEmitters.h>
@@ -18,7 +19,7 @@ using namespace facebook::react;
 @end
 
 @implementation RNMapView {
-  MKMapView * _view;
+  AJSMapView * _view;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -32,7 +33,7 @@ using namespace facebook::react;
     static const auto defaultProps = std::make_shared<const RNMapViewProps>();
     _props = defaultProps;
 
-    _view = [[MKMapView alloc] init];
+    _view = [[AJSMapView alloc] init];
 
     UITapGestureRecognizer *tapRecognizer = [
       [UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)
@@ -163,10 +164,7 @@ inline void RCTMapViewHandleCommand(RNMapView *componentView, NSString const *co
 
 - (void)moveTo:(float)latitude longitude:(float)longitude animated:(BOOL)animated
 {
-  CLLocationCoordinate2D center;
-  center.latitude = latitude;
-  center.longitude = longitude;
-  [_view setCenterCoordinate:center animated:animated];
+  [_view moveTo:latitude longitude:longitude animated:animated];
 }
 
 Class<RCTComponentViewProtocol> RNMapViewCls(void)
