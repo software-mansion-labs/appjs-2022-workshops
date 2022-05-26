@@ -12,6 +12,8 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.RNMapViewManagerInterface;
 import com.facebook.react.viewmanagers.RNMapViewManagerDelegate;
 
+import java.util.Map;
+
 @ReactModule(name = RNMapViewManagerImpl.NAME)
 public class RNMapViewManager extends SimpleViewManager<RNMapView>
         implements RNMapViewManagerInterface<RNMapView> {
@@ -44,6 +46,11 @@ public class RNMapViewManager extends SimpleViewManager<RNMapView>
     @ReactProp(name = "mapType")
     public void setMapType(RNMapView view, @Nullable String mapType) {
         RNMapViewManagerImpl.setMapType(view, mapType);
+    }
+
+    @Override
+    public @Nullable Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return RNMapViewManagerImpl.getExportedCustomDirectEventTypeConstants();
     }
 
 }
